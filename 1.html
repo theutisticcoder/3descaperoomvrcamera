@@ -169,15 +169,15 @@ var rx = 0;
  document.getElementById('allow').style.display = "none";
 
 						// feature detect
-						if (typeof DeviceMotionEvent.requestPermission === 'function') {
-							DeviceMotionEvent.requestPermission()
+						if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+							DeviceOrientationEvent.requestPermission()
 								.then(permissionState => {
 									if (permissionState === 'granted') {
-											window.addEventListener('devicemotion', (accelerometer) => {
-																 x = accelerometer.accelerationIncludingGravity.x;
-																 y = accelerometer.accelerationIncludingGravity.y;
-																 z = accelerometer.accelerationIncludingGravity.z;
-												world.style.transform = `translateZ(600px) rotateY(${(Math.atan2(-x, Math.sqrt(y*y + z*z)) * 180/Math.PI)}deg) rotateX(${(Math.atan2(y, z) * 180/Math.PI)}deg)`;
+											window.addEventListener('deviceorientation', (e) => {
+																 x = e.beta;
+																 y = e.gamma;
+																 z = e.alpha;
+												world.style.transform = `translateZ(600px) rotateY(${(y}deg) rotateX(${x}deg) rotateZ(${z}deg)`;
 															});
 										
 									}
