@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 1</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+	<script src="js/gyro.js"></script>
+
+</head>
+<audio src="Boom.mp3" id="boom"></audio>
+<body onload="alert('Find the Pickaxe to move on to step 2. Escape before 1 minute is up. Move your device to change your angle of view.  Good luck...')">
+	<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	
+	}
+
+	body {
+		background: black;
+			width: 100%;
+		height: 100%;
+	}
+
+	#model {
+		position: absolute;
+		height: 30px;
+		width: 30px;
+		transform: rotateY(90deg);
+	transform-style: preserve-3d;
+	}
+
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+					z-index: 11;
+	}
+
+	#boxDiv {
+		width: 500px;
+		height: 500px;
+
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 1000px;
+		height: 1000px;
+		position: absolute;
+
+	}
+canvas{
+	width: 100vw;
+	height: 100vh; 
+	margin: none;
+	position: absolute;
+}
+	#front {
+		transform: translateZ(500px) rotateY(180deg);
+	}
+
+	#back {
+		transform: translateZ(-500px);
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-500px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(-90deg) translateX(500px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-500px);
+		transform-origin: top;
+	}
+
+	#bottom {
+		transform: rotateX(90deg) translateY(500px);
+		transform-origin: bottom;
+	}
+
+	img {
+		width: 500px;
+		height: 500px;
+	}
+			#front, #back, #top, #bottom, #left, #right {
+		position: absolute;
+		height: 1000px;
+				background: url(grass.jpg);
+				opacity: 0.3;
+		width: 1000px;
+			}
+</style>
+
+
+
+			<video autoplay="true" style="height: 100%; width: 100%; position: absolute; z-index: 10; margin: 0;" id="vid" hidden="true"></video>
+  <canvas id="my-canvas" ></canvas>
+	<div id="mainDiv">
+			<button id="allow">Allow VR</button>
+		<div id="boxDiv">
+			<div id="top"></div>
+			<div id="bottom"></div>
+			<div id="front"></div>
+			<div id="back"></div>
+			<div id="left"></div>
+			<div id="right"></div>	
+			<audio id="pick"  src="pickaxe.mp3"></audio>
+			<model-viewer style="height: 200px; width: 200px;" src="deep_rock_galactic_pickaxe.glb" autorotate camera-controls id="model" onclick="step2()"
+				draggable="true" style="height: 100px; width: 100px;"></model-viewer>
+			<script>
+				var d = 0;
+				function move(){
+					d+= 0.1;
+					requestAnimationFrame(move);
+				}
+				
+				function calcRoll(y, z){
+					return Math.atan2(y, z) * 180/Math.PI;
+				}
+var rx = 0;
+				var ry = 0;
+				var rz = 0;
+				function calcPitch(x, y, z){
+					return Math.atan2(-x, Math.sqrt(y*y + z*z)) * 180/Math.PI;
+				}
+				function deviceOrientationEventHandler(deviceOrientationEvent) {
+					world.style.transform = `translateZ(600px) rotateZ(${deviceOrientationEvent.alpha}deg) rotateX(${deviceOrientationEvent.beta}deg) rotateY(${deviceOrientationEvent.gamma}deg)`;
+				}
+				var clicks;
+				var world = document.getElementById('boxDiv'); var x = 0;
+				var y = 0; var z = 0;
+				
+								var ctx = document.getElementById("my-canvas").getContext("2d");
+				function draw(){
+					ctx.drawImage(document.getElementById("vid"),0,0);
+					setTimeout(draw,1000/60);
+				}
+				function onclick() {
+					world.style.transform = `translateZ(600px) rotateY(${y}deg) rotateX(${x}deg) rotateZ(${z}deg)`;
+					
+							navigator.mediaDevices
+    .enumerateDevices()
+    .then((devices) => {
+      devices.forEach((device) => {
+        console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+      });
+    })
+    .catch((err) => {
+      console.error(`${err.name}: ${err.message}`);
+    });
+
+					
+ document.getElementById('allow').style.display = "none";
+
+						// feature detect
+						if (typeof DeviceMotionEvent.requestPermission === 'function') {
+							DeviceMotionEvent.requestPermission()
+								.then(permissionState => {
+									if (permissionState === 'granted') {
+											window.addEventListener('devicemotion', (accelerometer) => {
+																 x = accelerometer.accelerationIncludingGravity.x;
+																 y = accelerometer.accelerationIncludingGravity.y;
+																 z = accelerometer.accelerationIncludingGravity.z;
+												world.style.transform = `translateZ(600px) rotateY(${(Math.atan2(-x, Math.sqrt(y*y + z*z)) * 180/Math.PI)}deg) rotateX(${(Math.atan2(y, z) * 180/Math.PI)}deg)`;
+															});
+										
+									}
+								})
+								.catch(console.error);
+						} else {
+							const acl = new Accelerometer({frequency: 30});
+							acl.addEventListener("reading", () => {
+								 x =acl.x *5;
+												 y = acl.y*5;
+												 z = acl.z*5;
+								
+								world.style.transform = `translateZ(600px) rotateY(${y}deg) rotateX(${x}deg) rotateZ(${z}deg)`;
+
+							});
+							acl.start();
+						}
+				
+				navigator.mediaDevices.getUserMedia({video: {
+																							 facingMode: 'environment'
+																						 }
+}).then(function(video){
+					var b = new Blob([video], {type: "video/mp4"});
+					      document.getElementById("vid").srcObject = video; 
+				});
+					
+setTimeout(draw, 1000/60);
+
+				}
+				document.getElementById('allow').addEventListener("click", onclick);
+
+				document.onkeydown = (e) => {
+					if (e.key == "c") {
+						e.preventDefault();
+						document.getElementById('chicken').hidden = false;
+					}
+				};
+
+					
+				var noise = document.querySelector("#pick");
+
+				setTimeout(function () {
+					alert("Game Over!");
+					let retry = confirm("Try again?");
+					if (retry == true) {
+						location.reload();
+					}
+					else {
+						window.close();
+					}
+				}, 60000);
+				function step2() {
+					alert("Pickaxe Collected.");
+					alert("Good Job! Use the pickaxe to escape your dirt prison. Click anywhere on the walls to break them with the pickaxe...keep clicking to break the hard dirt. ");
+					let model = document.getElementById('model');
+					model.style.display = "none";
+					 clicks = 0
+					document.addEventListener('click', bruh);
+				}
+				function bruh() {
+					clicks++;
+					noise.play();
+
+					if (clicks === 20) {
+						let explosion = document.getElementById('expl');
+						explosion.style.display = 'block';
+						let boom = document.getElementById('boom');
+						boom.play();
+						setTimeout(function () {
+							alert("Great Job! You Completed level 1!");
+							let next = confirm("Play Level 2?");
+							if (next == true) {
+								window.location.href = "2.html";
+							}
+							else {
+								let again = confirm("Play again?");
+								if (again == true) {
+									location.reload();
+								}
+								else {
+									alert("Bye");
+									window.close();
+								}
+
+
+							}
+						}, 2000);
+					}
+				}
+			</script>
+			<img src="explosion.png" id="expl" style="display: none">
+		</div>
+	</div>
+
+</body>
+
+</html>

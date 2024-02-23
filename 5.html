@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 5</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist model-viewer.min.js"></script>
+<script nomodule src="https://unpkg.com/@google/model-viewer@0.5.1/dist/model-viewer-legacy.js"> </script>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		width: 100%;
+	}
+
+	body {
+		overflow: hidden;
+		background-image: url(Ice.png)
+	}
+
+	#mainDiv {
+		width: 1000px;
+		height: 1000px;
+		margin: 200px auto;
+		perspective: 800px;
+		position: relative;
+	}
+
+
+	div {
+		width: 1000px;
+		height: 1000px;
+		position: absolute;
+	}
+
+	#boxDiv {
+		animation: 30s change1 linear;
+		width: 1000px;
+		height: 1000px;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#front {
+		transform: translateZ(500px);
+		animation-iteration-count: 1;
+		animation: move1 30s linear;
+	}
+
+	#back {
+		transform: translateZ(-500px);
+		animation: move1 30s linear;
+		animation-iteration-count: 1;
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-500px);
+		transform-origin: left;
+		animation-iteration-count: 1;
+		animation: 30s move2 linear;
+	}
+
+	#right {
+		transform: rotateY(90deg) translateX(500px);
+		transform-origin: right;
+		animation: 30s move2 linear;
+		animation-iteration-count: 1;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-500px);
+		transform-origin: top;
+		animation: move3 30s linear;
+		animation-iteration-count: 1;
+	}
+
+	#bottom {
+		transform: rotateX(-90deg) translateY(500px);
+		transform-origin: bottom;
+		animation: move3 30s linear;
+		animation-iteration-count: 1;
+	}
+
+	#front,
+	#back{
+		background-image: url(icetext.jpg);
+		position: absolute;
+	}
+	@keyframes move1 {
+		100% {
+			transform: translateZ(0px);
+		}
+		}
+	canvas{
+	width: 100vw;
+	height: 100vh; 
+	margin: none;
+	position: absolute;
+}
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+					z-index: 11;
+	}
+	#boxDiv {
+		width: 500px;
+		height: 500px;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	display: none;
+	}
+		#front, #back, #top, #bottom, #left, #right {
+		position: absolute;
+		height: 1000px;
+		width: 1000px;
+		}
+</style>
+
+<body
+	onload="alert('Welcome to the finale. there are 2 ice walls that will crush you in 30 seconds. Find the Pickaxe. Quick! Good luck!')">
+	<video autoplay="true" style="height: 100%; width: 100%; position: absolute; z-index: 10; margin: 0;" id="vid" hidden="true"></video>
+  <canvas id="my-canvas" ></canvas>
+	<div id="mainDiv">
+			<button id="allow">Allow VR</button>
+
+		<div id="boxDiv">
+			<div id="top"></div>
+			<div id="bottom"></div>
+			<div id="front"></div>
+			<div id="back"></div>
+			<div id="left"><img src="./Pickaxe.png" height="500px" width="500px" id="jetpack"></div>
+			<div id="right"></div>
+
+			<script>
+				var rx = 0, ry = 0, rz = 0;
+
+				var clicks = 0;
+							var world = document.getElementById('boxDiv');				var x;
+				var y;
+				const acl = new Accelerometer({frequency: 30});
+				acl.addEventListener("reading", () => {
+					 x =acl.x *5;
+									 y = acl.y*5;
+									 z = acl.z*5;
+
+					world.style.transform = `translateZ(600px) rotateY(${y}deg) rotateX(${x}deg) rotateZ(${z}deg)`;
+
+				});
+				acl.start();
+			var ctx = document.getElementById("my-canvas").getContext("2d");
+				function draw(){
+					ctx.drawImage(document.getElementById("vid"),0,0);
+					setTimeout(draw,1000/60);
+				}
+				function onclick() {
+ document.getElementById('allow').style.display = "none";
+world.style.display = "block";
+					document.body.requestFullscreen().then(()=>{
+						screen.orientation.lock("landscape");
+					});
+					if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+						DeviceOrientationEvent.requestPermission().then(function (permissionState) {
+							if (permissionState === 'granted') {
+								window.addEventListener('deviceorientation', function (e) {
+									world.style.transform = `translateZ(600px) rotateZ(${e.alpha}deg) rotateX(${e.beta}deg) rotateY(${e.gamma}deg)`;
+								});
+							}
+						}) 
+							.catch(console.error);
+					}
+				navigator.mediaDevices.getUserMedia({video:{
+																							facingMode: 'environment'
+																						}}).then(function(video){
+					var b = new Blob([video], {type: "video/mp4"});
+					      document.getElementById("vid").srcObject = video; 
+				});
+					
+setTimeout(draw, 1000/60);
+
+				}
+				document.onkeydown = (e) => {
+					if(e.key == "c"){
+							e.preventDefault();
+					document.getElementById('chicken').hidden = false;
+					}	
+				};
+function onclick2(){
+document.getElementById('allow').hidden = true;
+var sensor = new Gyroscope();
+	sensor.start();
+	var x,y,z;
+	sensor.onreading = () =>{
+		world.style.transform = `translateZ(600px) rotateZ(${sensor.z}deg) rotateX(${sensor.x}deg) rotateY(${sensor.y}deg)`;
+	}
+}
+				function deviceOrientationEventHandler(e){
+					var alpha
+							world.style.transform = `translateZ(600px) rotateZ(${e.alpha}deg) rotateX(${e.beta}deg) rotateY(${e.gamma}deg)`;
+  console.log(`${e.alpha} : ${e.beta} : ${e.gamma}`);				
+
+				}
+				window.addEventListener("deviceorientationabsolute", deviceOrientationEventHandler);
+				window.addEventListener("MozOrientation", deviceOrientationEventHandler);
+if ("ondeviceorientation" in window) {
+  // device orientation is supported
+  // add an event listener for device orientation events and assign a handler
+  window.addEventListener("deviceorientation", deviceOrientationEventHandler);
+} else {
+  // device orientation is not supported
+	console.log('VR not supported');
+}
+document.getElementById('allow').addEventListener("click", onclick);
+				setTimeout(function () {
+					alert("Game Over!");
+					let retry = confirm("Try again?");
+					if (retry == true) {
+						location.reload();
+					}
+					else {
+						open(location, '_self').close();
+					}
+				}, 30000);
+				document.getElementById('jetpack').addEventListener('click', function () {
+					alert("Great job! Now mine the ice with the pickaxe!");
+					document.addEventListener('click', function (e) {
+						clicks++;
+						if (clicks === 50) {
+							alert("Congrats! You have bested the the secret level! Enjoy!");
+							location.href = "6.html";
+						}
+					});
+				});
+
+				
+			</script>
+		</div>
+	</div>
+</body>
+
+</html>

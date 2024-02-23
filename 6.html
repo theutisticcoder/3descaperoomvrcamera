@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 6</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+	<script src="script.js"></script>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	.explode {
+		height: 50px;
+		width: 50px;
+		position: absolute;
+		z-index: 1;
+	}
+
+
+
+	body {
+		overflow: hidden;
+		background: black;
+	}
+
+	#mainDiv {
+		width: 500px;
+		height: 500px;
+		margin: 200px auto;
+		perspective: 800px;
+		position: relative;
+	}
+
+	#boxDiv {
+		width: 1000px;
+		height: 1000px;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 1000px;
+		height: 1000px;
+		position: absolute;
+		z-index: -1;
+	}
+
+	#front {
+		transform: translateZ(500px);
+	}
+
+	#back {
+		transform: translateZ(-500px);
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-500px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(-90deg) translateX(500px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-500px);
+		transform-origin: top;
+	}
+
+	#progress {
+		color: red;
+		position: absolute;
+		z-index: 1;
+		left: 600px;
+		transform: translateY(-200px);
+	}
+
+	#sh {
+		left: 500px;
+		position: absolute;
+		z-index: 1;
+		transform: translateY(-175px);
+		color: white;
+	}
+canvas{
+	width: 100vw;
+	height: 100vh; 
+	margin: none;
+	position: absolute;
+}
+	#mainDiv {
+		width: 1000px;
+		height: 1000px;
+		margin: 200px auto;
+		perspective: 800px;
+					z-index: 11;
+	}
+#boxDiv {
+		width: 1000px;
+		height: 1000px;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	display: none;
+	}
+#soldier{
+	height: 500px;
+	width:500px;
+	position: absolute;
+}
+	#bottom {
+		transform: rotateX(90deg) translateY(500px);
+		transform-origin: bottom;
+
+	}
+
+	#front, #back, #top, #bottom, #left, #right {
+		position: absolute;
+		height: 1000px;
+		width: 1000px;
+		background-image: url("fence.png");
+	}
+</style>
+
+<body
+	onload="alert('Welcome to the boss battle. Click the soldier to fight your way out of the metal prison! You have 10 minutes. Good Luck! WARNING: fireballs are deadly...'); alert('WW2 Panzergrenadier 2k (CC0) (https://skfb.ly/oAGuZ) by britdawgmasterfunk is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).')">
+	<p id="sh">Boss Health:</p><progress id="progress" max="25" value="25">
+	</progress>
+<video autoplay="true" style="height: 100%; width: 100%; position: absolute; z-index: 10; margin: 0;" id="vid" hidden="true"></video>
+  <canvas id="my-canvas" ></canvas>
+	<div id="mainDiv">
+			<button id="allow">Allow VR</button>
+		<div id="boxDiv">
+			<div id="top"></div>
+			<div id="bottom"></div>
+			<div id="front"></div>
+			<div id="back"></div>
+			<div id="left"></div>
+			<div id="right"></div>
+			<model-viewer src="soldier.glb"camera-controls id="soldier"></model-viewer>
+
+			<script>
+				var rx = 0, ry = 0, rz = 0;
+
+				var deaths = 0;
+				var b = Math.floor(Math.random() * 500);
+				var a = Math.floor(Math.random() * 500);
+				var c = Math.floor(Math.random() * 500);
+				setInterval(function () {
+					setTimeout(function () {
+						var fireball = document.createElement("img");
+						fireball.src = "explosion.png";
+						b = Math.floor(Math.random() * 500);
+						a = Math.floor(Math.random() * 500);
+						c = Math.floor(Math.random() * 500);
+						fireball.style.transform = "translateX(" + a + "px) translateY(" + b + "px) translateZ(" + c + "px)";
+						fireball.classList.add("explode");
+						fireball.onclick = () => {
+							deaths++;
+
+						};
+						document.getElementById('boxDiv').appendChild(fireball);
+					}, 20000);
+				}, 1000);
+				var clicks = 0;
+							var world = document.getElementById('boxDiv');	
+			
+				var x;
+				var y;
+				const acl = new Accelerometer({frequency: 30});
+				acl.addEventListener("reading", () => {
+					 x =acl.x *5;
+									 y = acl.y*5;
+									 z = acl.z*5;
+
+					world.style.transform = `translateZ(600px) rotateY(${y}deg) rotateX(${x}deg) rotateZ(${z}deg)`;
+
+				});
+				acl.start();
+			var ctx = document.getElementById("my-canvas").getContext("2d");
+				function draw(){
+					ctx.drawImage(document.getElementById("vid"),0,0);
+					setTimeout(draw,1000/60);
+				}
+				function onclick() {
+					document.body.requestFullscreen().then(()=>{
+						screen.orientation.lock("landscape");
+					});
+ document.getElementById('allow').style.display = "none";
+world.style.display = "block";
+					if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+						DeviceOrientationEvent.requestPermission().then(function (permissionState) {
+							if (permissionState === 'granted') {
+								window.addEventListener('deviceorientation', function (e) {
+									world.style.transform = `translateZ(600px) rotateZ(${e.alpha}deg) rotateX(${e.beta}deg) rotateY(${e.gamma}deg)`;
+								});
+							}
+						}) 
+							.catch(console.error);
+					}
+				navigator.mediaDevices.getUserMedia({video: {
+																							facingMode: 'environment'
+																						}}).then(function(video){
+					var b = new Blob([video], {type: "video/mp4"});
+					      document.getElementById("vid").srcObject = video; 
+				});
+					
+setTimeout(draw, 1000/60);
+
+				}
+				document.onkeydown = (e) => {
+					if(e.key == "c"){
+							e.preventDefault();
+					document.getElementById('chicken').hidden = false;
+					}	
+				};
+function onclick2(){
+document.getElementById('allow').hidden = true;
+var sensor = new Gyroscope();
+	sensor.start();
+	var x,y,z;
+	sensor.onreading = () =>{
+		world.style.transform = `translateZ(600px) rotateZ(${sensor.z}deg) rotateX(${sensor.x}deg) rotateY(${sensor.y}deg)`;
+	}
+}
+				function deviceOrientationEventHandler(e){
+					var alpha
+							world.style.transform = `translateZ(600px) rotateZ(${e.alpha}deg) rotateX(${e.beta}deg) rotateY(${e.gamma}deg)`;
+  console.log(`${e.alpha} : ${e.beta} : ${e.gamma}`);				
+
+				}
+				window.addEventListener("deviceorientationabsolute", deviceOrientationEventHandler);
+				window.addEventListener("MozOrientation", deviceOrientationEventHandler);
+if ("ondeviceorientation" in window) {
+  // device orientation is supported
+  // add an event listener for device orientation events and assign a handler
+  window.addEventListener("deviceorientation", deviceOrientationEventHandler);
+} else {
+  // device orientation is not supported
+	console.log('VR not supported');
+}
+document.getElementById('allow').addEventListener("click", onclick);
+				document.getElementById('soldier').onload = () => {
+					setTimeout(function () {
+						alert("Game Over!");
+						let retry = confirm("Try again?");
+						if (retry == true) {
+							location.reload();
+						}
+						else {
+							window.close();
+						}
+					}, 600000);
+				};
+							if (deaths > 10) {
+								alert("You Died");
+								window.reload();
+							}
+				var clicks = 0;
+
+
+				var health = document.getElementById('progress');
+				health.style.height = "100px";
+				health.style.width = "500px";
+				var s = Math.floor(Math.random() * 150);
+				var b = Math.floor(Math.random() * 150);
+				var d = Math.floor(Math.random() * 150);
+var soldier = document.getElementById("soldier")
+				soldier.addEventListener('click', function () {
+					s = Math.floor(Math.random() * 150);
+					b = Math.floor(Math.random() * 150);
+					d = Math.floor(Math.random() * 150);
+					document.getElementById('soldier').style.transform = "translateX(" + s + "px) translateY(" + b + "px) translateZ(" + d + "px)";
+					clicks++;
+					console.log(clicks);
+					health.value--;
+					if (clicks >= 25) {
+						alert("Congrats! You have bested the the final boss level! Have a nice day!");		
+						window.location.href = "author.html";
+					}
+				});
+			</script>
+		</div>
+	</div>
+</body>
+
+</html>

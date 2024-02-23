@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>3D Escape Room Level 3</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+	<audio src="Boom.mp3" id="boom"></audio>
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		overflow: hidden;
+	}
+
+	#mainDiv {
+		width:1000px;
+		height: 1000px;
+		margin: 200px auto;
+		perspective: 800px;
+	}
+
+	#boxDiv {
+		width: 1000px;
+		height: 1000px;
+
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+
+	#boxDiv div {
+		width: 1000px;
+		height: 1000px;
+		position: absolute;
+	}
+	#front {
+		transform: translateZ(500px) rotateY(180deg);
+	}
+
+	#back {
+		transform: translateZ(-500px);
+	}
+
+	#left {
+		transform: rotateY(90deg) translateX(-500px);
+		transform-origin: left;
+	}
+
+	#right {
+		transform: rotateY(-90deg) translateX(500px);
+		transform-origin: right;
+	}
+
+	#top {
+		transform: rotateX(-90deg) translateY(-500px);
+		transform-origin: top;
+	}
+canvas{
+	width: 100vw;
+	height: 100vh; 
+	margin: none;
+	position: absolute;
+} #enemy{
+	position: absolute;
+	height: 300px;
+	width:300px;
+}
+	#mainDiv {
+		width: 1000px;
+		height: 1000px;
+		margin: 200px auto;
+		perspective: 800px;
+					z-index: 11;
+	}
+	#bottom {
+		transform: rotateX(90deg) translateY(500px);
+		transform-origin: bottom;
+	}
+	#boxDiv {
+		width: 1000px;
+		height: 1000px;
+	display: none;
+		transform-style: preserve-3d;
+		transform: translateZ(6000px);
+	}
+		#front, #back, #top, #bottom, #left, #right {
+		position: absolute;
+		height: 1000px;
+		width: 1000px;
+				background: url(lava.jpg);
+			opacity: 0.3;
+</style>
+
+<body onload="alert('You are now in a Volcano. Find the Goomba and click them to kill them to move on to step 2. Escape before 1 minute is up, or you will burn. Move your device to move. Good luck...')">
+<video autoplay="true" style="height: 100%; width: 100%; position: absolute; z-index: 10; margin: 0;" id="vid" hidden="true"></video>
+  <canvas id="my-canvas" ></canvas>
+	<div id="mainDiv">
+			<button id="allow"">Allow VR</button>
+		<div id="boxDiv">
+			<div id="top"></div>
+			<div id="bottom"></div>
+			<div id="front"></div>
+			<div id="back"></div>
+			<div id="left"></div>
+			<div id="right"></div>
+			<img src="Goomba.png"id="enemy">
+			<script>
+				var rx = 0, ry = 0, rz = 0;
+
+				var goomba = document.getElementById('enemy');
+				function cl() {
+					alert("Good job! Now click the lava walls to get out. They have now hardened. Break them with your old friend: the pickaxe. Click to use it!");
+					goomba.style.display = "none";
+					document.getElementById("front").style.backgroundImage = "url(obsidian.jpg)";
+					document.getElementById("back").style.backgroundImage = "url(obsidian.jpg)";
+					document.getElementById("left").style.backgroundImage = "url(obsidian.jpg)";
+					document.getElementById("right").style.backgroundImage = "url(obsidian.jpg)";
+					document.getElementById("top").style.backgroundImage = "url(obsidian.jpg)";
+					document.getElementById("bottom").style.backgroundImage = "url(obsidian.jpg)";
+				}
+				goomba.addEventListener("click", cl);
+						var world = document.getElementById('boxDiv');				var x;
+				var y;
+				const acl = new Accelerometer({frequency: 30});
+				acl.addEventListener("reading", () => {
+					 x =acl.x *5;
+									 y = acl.y*5;
+									 z = acl.z*5;
+
+					world.style.transform = `translateZ(600px) rotateY(${y}deg) rotateX(${x}deg) rotateZ(${z}deg)`;
+
+				});
+				acl.start();
+			var ctx = document.getElementById("my-canvas").getContext("2d");
+				function draw(){
+					ctx.drawImage(document.getElementById("vid"),0,0);
+					setTimeout(draw,1000/60);
+				}
+				function onclick() {
+					world.style.display = "block";
+
+ document.getElementById('allow').style.display = "none";
+
+					if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+						DeviceOrientationEvent.requestPermission().then(function (permissionState) {
+							if (permissionState === 'granted') {
+								window.addEventListener('deviceorientation', function (e) {
+									world.style.transform = `translateZ(600px) rotateZ(${e.alpha}deg) rotateX(${e.beta}deg) rotateY(${e.gamma}deg)`;
+								});
+							}
+						}) 
+							.catch(console.error);
+					}
+				navigator.mediaDevices.getUserMedia({video: {
+																							facingMode: 'environment'
+																						}}).then(function(video){
+					var b = new Blob([video], {type: "video/mp4"});
+					      document.getElementById("vid").srcObject = video; 
+				});
+					
+setTimeout(draw, 1000/60);
+
+				}
+				document.onkeydown = (e) => {
+					if(e.key == "c"){
+							e.preventDefault();
+					document.getElementById('chicken').hidden = false;
+					}	
+				};
+function onclick2(){
+document.getElementById('allow').hidden = true;
+var sensor = new Gyroscope();
+	sensor.start();
+	var x,y,z;
+	sensor.onreading = () =>{
+		world.style.transform = `translateZ(600px) rotateZ(${sensor.z}deg) rotateX(${sensor.x}deg) rotateY(${sensor.y}deg)`;
+	}
+}
+				function deviceOrientationEventHandler(e){
+					var alpha
+							world.style.transform = `translateZ(600px) rotateZ(${e.alpha}deg) rotateX(${e.beta}deg) rotateY(${e.gamma}deg)`;
+  console.log(`${e.alpha} : ${e.beta} : ${e.gamma}`);				
+
+				}
+				window.addEventListener("deviceorientationabsolute", deviceOrientationEventHandler);
+				window.addEventListener("MozOrientation", deviceOrientationEventHandler);
+if ("ondeviceorientation" in window) {
+  // device orientation is supported
+  // add an event listener for device orientation events and assign a handler
+  window.addEventListener("deviceorientation", deviceOrientationEventHandler);
+} else {
+  // device orientation is not supported
+	console.log('VR not supported');
+}
+document.getElementById('allow').addEventListener("click", onclick);
+
+					setTimeout(function (){
+						alert("Game Over!");
+						let retry = confirm("Try again?");
+						if(retry == true){
+							location.reload();
+						}
+						else{
+							window.close();
+						}
+					}, 60000);
+				var clicks = 0
+				document.addEventListener('click', function (){
+					clicks++;
+					if(clicks === 75){
+
+							alert("Great Job! You Completed level 3!");
+						let l4 = confirm("Play level 4?");
+						if(l4 == true){
+							location.href = "4.html";
+						}
+						else{
+						let again = confirm("Play again?");
+						if(again == true){
+							location.reload();
+						}
+						else{
+							alert("Bye");
+							window.close();
+						}
+						}
+					}
+				});					
+				
+				
+			</script>
+			<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+			<script type="module">
+				
+			</script>
+		</div>
+	</div>
+</body>
+</html>
