@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         const response = await paymentsApi.createPayment({
             sourceId: token,
             idempotencyKey: crypto.randomUUID(),
-            amountMoney: { amount: 999, currency: "USD" }, // $9.99
+            amountMoney: { amount: 500, currency: "USD" }, // $5.00
         });
 
         res.json({ success: true, payment: response.result });
