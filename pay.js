@@ -1,4 +1,4 @@
-const payments = Square.payments("YOUR_SQUARE_APPLICATION_ID", "SANDBOX"); // Use "PRODUCTION" for live
+const payments = Square.payments("sq0idp-E_qLK2OzX4FLJPQdeDc0_Q", "PRODUCTION"); // Use "PRODUCTION" for live
 let googlePay;
 
 async function initializeGooglePay() {
