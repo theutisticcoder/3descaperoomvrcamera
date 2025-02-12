@@ -19,7 +19,7 @@ export default async function handler(req, res) {
                 currency: "USD",
             },
             autocomplete: true,
-            sourceId: token,
+            sourceId: "cnon:card-nonce-ok",
             note: "levels 5 and 6"
         });
 
