@@ -1,10 +1,9 @@
 import express from "express";
-import {SquareClient, SquareEnvironments} from "square"
+import {SquareClient} from "square"
 const app = express();
 app.use(express.json());
 
 const client = new SquareClient({
-    environment: SquareEnvironments.Production,
     token: "EAAAlyds8tzs4Knf1MvV6t86RNeW0sQRh5bOEQkXT_m886RaUTW0GUi5ToPWaaTp",
 });
 export default async function handler(req, res) {
