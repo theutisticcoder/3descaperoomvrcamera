@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import {SquareClient} from "square"
 const app = express();
 app.use(express.json());
