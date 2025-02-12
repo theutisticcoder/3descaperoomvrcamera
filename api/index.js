@@ -19,7 +19,7 @@ export default async function handler(req, res) {
                 currency: "USD",
             },
             autocomplete: true,
-            "source-id": token,
+            sourceId: token,
             note: "levels 5 and 6"
         });
 
