@@ -1,5 +1,3 @@
 {
-  "dependencies": {
-    "sw-precache": "^4.1.0"
-  }
+  "type": "module"
 }

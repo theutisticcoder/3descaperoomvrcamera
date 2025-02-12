@@ -1,6 +1,5 @@
-const express = require("express");
-const { squareClient } = require("square");
-
+import * as express from "express";
+import {squareClient} from "square"
 const app = express();
 app.use(express.json());
 
