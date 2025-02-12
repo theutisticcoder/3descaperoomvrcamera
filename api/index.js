@@ -5,7 +5,6 @@ const app = express();
 app.use(express.json());
 
 const squareClient = new Client({
-    environment: Environment.Production, // Change to Environment.Production for live payments
     accessToken: "EAAAlyds8tzs4Knf1MvV6t86RNeW0sQRh5bOEQkXT_m886RaUTW0GUi5ToPWaaTp",
 });
 
