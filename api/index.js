@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     if (req.method !== "POST") return res.status(405).end();
 
     try {
+        const { token } = req.body;
 
         const response = await client.payments.create({
             idempotencyKey: "7b0f3ec5-086a-4871-8f13-3c81b3875218",
@@ -18,6 +19,7 @@ export default async function handler(req, res) {
                 currency: "USD",
             },
             autocomplete: true,
+            "source-id": token,
             note: "levels 5 and 6"
         });
 
