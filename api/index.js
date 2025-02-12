@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         const { token } = req.body;
 
         const response = await client.payments.create({
-            idempotencyKey: "7b0f3ec5-086a-4871-8f13-3c81b3875218",
+            idempotencyKey: "",
             amountMoney: {
                 amount: BigInt(500),
                 currency: "USD",
