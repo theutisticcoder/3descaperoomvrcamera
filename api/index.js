@@ -1,11 +1,11 @@
 const express = require("express");
-const { Client, Environment } = require("square");
+const { squareClient } = require("square");
 
 const app = express();
 app.use(express.json());
 
-const squareClient = new Client({
-    accessToken: "EAAAlyds8tzs4Knf1MvV6t86RNeW0sQRh5bOEQkXT_m886RaUTW0GUi5ToPWaaTp",
+const client = new squareClient({
+    token: "EAAAlyds8tzs4Knf1MvV6t86RNeW0sQRh5bOEQkXT_m886RaUTW0GUi5ToPWaaTp",
 });
 
 export default async function handler(req, res) {
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
     try {
         const { token } = req.body;
-        const paymentsApi = squareClient.paymentsApi;
+        const paymentsApi = client.paymentsApi;
 
         const response = await paymentsApi.createPayment({
             sourceId: token,
