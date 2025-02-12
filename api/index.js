@@ -1,9 +1,9 @@
 import * as express from "express";
-import {squareClient} from "square"
+import {SquareClient} from "square"
 const app = express();
 app.use(express.json());
 
-const client = new squareClient({
+const client = new SquareClient({
     token: "EAAAlyds8tzs4Knf1MvV6t86RNeW0sQRh5bOEQkXT_m886RaUTW0GUi5ToPWaaTp",
 });
 
