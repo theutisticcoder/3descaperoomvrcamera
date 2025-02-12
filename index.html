@@ -7,6 +7,8 @@
      crossorigin="anonymous"></script>
 	<script src="app.js"></script>
 	<link rel="manifest" href="manifest.json">
+	<script async src="https://pay.google.com/gp/p/js/pay.js"></script>
+	<script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
 	<meta charset="utf-8">
 	<link rel="apple-touch-icon" href="elements.png" />
 	<meta name="viewport" content="width=device-width">
@@ -30,19 +32,20 @@
 		<a href="3.html" style="color: white;"><img src="Level3.jpg" height="50px" width="50px"></a>
 		<a href="4.html" style="color: white;"><img src="Level4.png" height="50px" width="50px"></a>
 		<br />
-		<a href="5.html" style="color: white;">Level 5</a>
-		<a href="6.html" style="color: white;">Level 6</a>
+		<a href="5.html" hidden id="5" style="color: white;">Level 5</a>
+		<a href="6.html" hidden id="6" style="color: white;">Level 6</a>
 		<a href="author.html" style="color: white; font-size: 9pt;">About The Developer</a>
 		<br>
-
-		<a href="5.html" style="color: white;"><img src="Ice.png" height="50px" width="50px"></a>
-		<a href="6.html" style="color: white;"><img src="metal.png" height="50px" width="50px"></a>
+		<div id="google-pay-button"></div>
+		<script src="pay.js"></script>
+		
+		<a href="5.html" id="5im" hidden style="color: white;"><img src="Ice.png" height="50px" width="50px"></a>
+		<a href="6.html" hidden id="6im" style="color: white;"><img src="metal.png" height="50px" width="50px"></a>
 		<a href="author.html" style="color: white;"><img src="hydrangea.jpg" height="50px" width="50px"><img
 				src="hydrangea.jpg" height="50px" width="50px"></a>
 		<br>
 		<a href="extensions.html" style="color: white; font-size: 32pt;">Mods</a>
 		<br>
-		<a style="color: yellow;" href="https://3d-Escape-Room.the-paperpaper.repl.co">Desktop Version</a>
 		<br>
 		<a style="color: white;" onclick="randomLevel()">Random Level</a>
 		<br>
@@ -50,7 +53,6 @@
 	</div>
 	<p style="color: white;">Disclaimer: This game may cause motion sickness. Play at your own risk.               
     
-The images used in this website are not mine. each image belongs to their respective owners. the use of these images is governed by their respective terms. The copying or selling of any of these images is not permitted.</p>
 
 
 	<script>
@@ -63,9 +65,7 @@ The images used in this website are not mine. each image belongs to their respec
 				"1.html",
 				"2.html",
 				"3.html",
-				"4.html",
-				"5.html",
-				"6.html"
+				"4.html"
 			];
 			var randomNumber = Math.floor(Math.random() * urlArray.length);
 			var newUrl = urlArray[randomNumber];
