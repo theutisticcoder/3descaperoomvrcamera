@@ -7,7 +7,7 @@ app.use(express.static(__dirname))
 
 const squareClient = new Client({
     environment: Environment.Production, // Change to Environment.Production for live payments
-    accessToken: "sq0idp-E_qLK2OzX4FLJPQdeDc0_Q",
+    accessToken: "EAAAlyds8tzs4Knf1MvV6t86RNeW0sQRh5bOEQkXT_m886RaUTW0GUi5ToPWaaTp",
 });
 
 app.post("/process-payment", async (req, res) => {
