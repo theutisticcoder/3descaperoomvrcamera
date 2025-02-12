@@ -94,14 +94,14 @@ canvas{
 		height: 1000px;
 		width: 1000px;
 				background: url(lava.jpg);
-			opacity: 0.3;
+			opacity: 0.3;}
 </style>
 
 <body onload="alert('You are now in a Volcano. Find the Goomba and click them to kill them to move on to step 2. Escape before 1 minute is up, or you will burn. Move your device to move. Good luck...')">
 <video autoplay="true" style="height: 100%; width: 100%; position: absolute; z-index: 10; margin: 0;" id="vid" hidden="true"></video>
   <canvas id="my-canvas" ></canvas>
 	<div id="mainDiv">
-			<button id="allow"">Allow VR</button>
+			<button id="allow">Allow VR</button>
 		<div id="boxDiv">
 			<div id="top"></div>
 			<div id="bottom"></div>
@@ -233,12 +233,10 @@ document.getElementById('allow').addEventListener("click", onclick);
 					}
 				});					
 				
-				
+			
 			</script>
 			<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-			<script type="module">
-				
-			</script>
+		
 		</div>
 	</div>
 </body>
