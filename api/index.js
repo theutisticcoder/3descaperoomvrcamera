@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         const { token } = req.body;
 
         const response = await client.payments.create({
-            idempotencyKey: Math.floor(Math.random() * 1000000000000000000000000000),
+            idempotencyKey: Math.floor(Math.random() * 1000000000000000000000000000).toString(),
             amountMoney: {
                 amount: BigInt(500),
                 currency: "USD",
