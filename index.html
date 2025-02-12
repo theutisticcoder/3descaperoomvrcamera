@@ -4,7 +4,7 @@
 <head>
 	<meta name="google-adsense-account" content="ca-pub-4386013108507854">
 	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4386013108507854"
-     crossorigin="anonymous"></script>
+		crossorigin="anonymous"></script>
 	<script src="app.js"></script>
 	<link rel="manifest" href="manifest.json">
 	<script async src="https://pay.google.com/gp/p/js/pay.js"></script>
@@ -14,7 +14,7 @@
 	<meta name="viewport" content="width=device-width">
 	<title>3D Escape Room</title>
 	<meta name="apple-mobile-web-app-status-bar" content="#db4938" />
-<meta name="theme-color" content="#000000" />
+	<meta name="theme-color" content="#000000" />
 	<link href="style.css" rel="stylesheet" type="text/css" />
 	<link rel="icon" href="elements.jpeg" />
 </head>
@@ -36,9 +36,13 @@
 		<a href="6.html" hidden id="6" style="color: white;">Level 6</a>
 		<a href="author.html" style="color: white; font-size: 9pt;">About The Developer</a>
 		<br>
-		<div style="background-color: white" id="google-pay-button">Pay For Bonus Levels</div>
+		<div style="color: white; border: 1px solid whitesmoke" id="pay-extra" onclick="document.querySelector('#payment').hidden = false">Pay $5 For Bonus Levels</div>
+		<div hidden id="payment">
+			<div id="card-container"></div>
+			<button id="card-button" disabled>Pay $5.00</button>
+		</div>
 		<script src="pay.js"></script>
-		
+
 		<a href="5.html" id="5im" hidden style="color: white;"><img src="Ice.png" height="50px" width="50px"></a>
 		<a href="6.html" hidden id="6im" style="color: white;"><img src="metal.png" height="50px" width="50px"></a>
 		<a href="author.html" style="color: white;"><img src="hydrangea.jpg" height="50px" width="50px"><img
@@ -51,45 +55,45 @@
 		<br>
 		<a style="color: white;" onclick="randomLevel()"><img height="150px" width="200px" src="choose.jpg"></a>
 	</div>
-	<p style="color: white;">Disclaimer: This game may cause motion sickness. Play at your own risk.               
-    
+	<p style="color: white;">Disclaimer: This game may cause motion sickness. Play at your own risk.
 
 
-	<script>
-		if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
 
-		function randomLevel() {
-			var urlArray = [
-				"1.html",
-				"2.html",
-				"3.html",
-				"4.html"
-			];
-			var randomNumber = Math.floor(Math.random() * urlArray.length);
-			var newUrl = urlArray[randomNumber];
-			window.location.href = newUrl;
-		}
-		var now = new Date();
-		var month = now.getMonth() + 1;
-		var day = now.getDate();
-		var today = month + "/" + day;
-		if (today === "2/14") {
-			alert("Happy Valentines Day!");
-			 var heart = confirm("Play Heart Level?");
-			if(heart == true){
-				window.location.href = "Valentines.html";
+		<script>
+			if ("serviceWorker" in navigator) {
+				navigator.serviceWorker.register("service-worker.js");
 			}
-		}
-		if (today === "12/21") {
-			alert("Happy Winter!");
-			 var wint = confirm("Play Winter Level?");
-			if(wint == true){
-				window.location.href = "Winter.html";
+
+			function randomLevel() {
+				var urlArray = [
+					"1.html",
+					"2.html",
+					"3.html",
+					"4.html"
+				];
+				var randomNumber = Math.floor(Math.random() * urlArray.length);
+				var newUrl = urlArray[randomNumber];
+				window.location.href = newUrl;
 			}
-		}
-	</script>
+			var now = new Date();
+			var month = now.getMonth() + 1;
+			var day = now.getDate();
+			var today = month + "/" + day;
+			if (today === "2/14") {
+				alert("Happy Valentines Day!");
+				var heart = confirm("Play Heart Level?");
+				if (heart == true) {
+					window.location.href = "Valentines.html";
+				}
+			}
+			if (today === "12/21") {
+				alert("Happy Winter!");
+				var wint = confirm("Play Winter Level?");
+				if (wint == true) {
+					window.location.href = "Winter.html";
+				}
+			}
+		</script>
 
 
 </body>
