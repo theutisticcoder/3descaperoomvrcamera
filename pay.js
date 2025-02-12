@@ -25,7 +25,7 @@ async function initializeSquare() {
 }
 
 async function processPayment(token) {
-    const response = await fetch("/api/process-payment", {
+    const response = await fetch("/api/index", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
